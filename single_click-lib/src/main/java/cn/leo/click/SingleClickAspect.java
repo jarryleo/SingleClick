@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
 @Aspect
 public class SingleClickAspect {
     private static long mLastClickTime;
-    private static Object mLastClickObject;
+    private static int mLastClickId;
 
     private static final String POINTCUT_METHOD =
             "execution(* onClick(..))";
@@ -47,18 +47,19 @@ public class SingleClickAspect {
         boolean hasAnnotation = method.isAnnotationPresent(SingleClick.class);
         //点击的不同对象不计算点击间隔
         Object[] args = joinPoint.getArgs();
-        if (args.length >= 1) {
+        if (args.length >= 1 && args[0] instanceof View) {
             Object arg = args[0];
-            if (mLastClickObject != arg) {
+            int id = ((View) arg).getId();
+            if (mLastClickId != id) {
                 joinPoint.proceed();
-                mLastClickObject = arg;
+                mLastClickId = id;
                 mLastClickTime = System.currentTimeMillis();
                 return;
             }
             //注解排除某个控件不防止点击
-            if (arg instanceof View && hasAnnotation) {
+            if (hasAnnotation) {
                 SingleClick annotation = method.getAnnotation(SingleClick.class);
-                int id = ((View) arg).getId();
+
                 int[] except = annotation.except();
                 for (int i : except) {
                     if (i == id) {

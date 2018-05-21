@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         Log.e("======", "showLog: " + System.currentTimeMillis());
     }
 
-    @SingleClick(except = R.id.tv1)
+    @SingleClick(value = 1000, except = {R.id.tv1, R.id.button})
     @OnClick({R.id.tv1, R.id.button, R.id.button2})
     public void onViewClicked(View view) {
         switch (view.getId()) {
