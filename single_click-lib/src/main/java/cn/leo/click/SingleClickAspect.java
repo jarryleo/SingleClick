@@ -1,5 +1,7 @@
 package cn.leo.click;
 
+import android.view.View;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -42,19 +44,32 @@ public class SingleClickAspect {
     public void aroundJoinPoint(final ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
+        boolean hasAnnotation = method.isAnnotationPresent(SingleClick.class);
         //点击的不同对象不计算点击间隔
         Object[] args = joinPoint.getArgs();
         if (args.length >= 1) {
-            if (mLastClickObject != args[0]) {
+            Object arg = args[0];
+            if (mLastClickObject != arg) {
                 joinPoint.proceed();
-                mLastClickObject = args[0];
+                mLastClickObject = arg;
                 mLastClickTime = System.currentTimeMillis();
                 return;
+            }
+            //注解排除某个控件不防止点击
+            if (arg instanceof View && hasAnnotation) {
+                SingleClick annotation = method.getAnnotation(SingleClick.class);
+                int id = ((View) arg).getId();
+                int[] except = annotation.except();
+                for (int i : except) {
+                    if (i == id) {
+                        joinPoint.proceed();
+                        return;
+                    }
+                }
             }
         }
         //计算点击间隔，没有注解默认500，有注解按注解参数来，注解参数为空默认500；
         int interval = 500;
-        boolean hasAnnotation = method.isAnnotationPresent(SingleClick.class);
         if (hasAnnotation) {
             SingleClick annotation = method.getAnnotation(SingleClick.class);
             interval = annotation.value();

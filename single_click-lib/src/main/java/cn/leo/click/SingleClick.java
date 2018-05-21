@@ -13,4 +13,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SingleClick {
     int value() default 500;
+
+    int[] except() default {-1};
 }

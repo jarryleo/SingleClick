@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.leo.click.SingleClick;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,12 +26,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mButton.setOnClickListener(new View.OnClickListener() {
+        /*mButton.setOnClickListener(new View.OnClickListener() {
             @Override
+            @SingleClick(300)
             public void onClick(View v) {
                 showLog();
             }
-        });
+        });*/
     }
 
     @SingleClick(1000)
@@ -42,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
         Log.e("======", "showLog: " + System.currentTimeMillis());
     }
 
-    /*@OnClick({R.id.tv1, R.id.button, R.id.button2})
+    @SingleClick(except = R.id.tv1)
+    @OnClick({R.id.tv1, R.id.button, R.id.button2})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv1:
@@ -55,5 +58,5 @@ public class MainActivity extends AppCompatActivity {
                 showLog();
                 break;
         }
-    }*/
+    }
 }
