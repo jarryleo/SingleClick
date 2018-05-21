@@ -17,6 +17,15 @@ public void onClick(View v) {
 
 注解参数为0 表示取消防重 不写参数 默认500ms
 
+若在一个点击事件方法有多个view的情况，想排除其中某些view不防双击使用以下方式:
+```
+    @SingleClick(value = 1000, except = {R.id.tv1, R.id.button})
+    @OnClick({R.id.tv1, R.id.button, R.id.button2})
+    public void onViewClicked(View view) {
+       ...
+    }
+```
+
 ps：直接在布局里指定的点击事件无法做到自动防重，请打上注解
 
 ### 依赖方法:
@@ -50,7 +59,7 @@ apply plugin: 'cn.leo.plugin.magic'
 
 ...
 dependencies {
-	implementation 'com.github.jarryleo:SingleClick:v1.0'
+	implementation 'com.github.jarryleo:SingleClick:v1.2'
 }
 ```
 
