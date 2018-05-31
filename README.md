@@ -60,6 +60,7 @@ apply plugin: 'cn.leo.plugin.magic' //java 用这个
 apply plugin: 'android-aspectjx'  //kotlin 用这个，编译速度会慢点    
 ...
 dependencies {
+	...
 	implementation 'com.github.jarryleo:SingleClick:v1.2'
 }
 ```
