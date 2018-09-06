@@ -9,10 +9,9 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.leo.click.SingleClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @BindView(R.id.tv1)
     TextView mTv1;
@@ -26,16 +25,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        /*mButton.setOnClickListener(new View.OnClickListener() {
+        mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             @SingleClick(300)
             public void onClick(View v) {
                 showLog();
             }
-        });*/
+        });
+        mTv1.setOnClickListener(new MyClickListener());
     }
 
-    @SingleClick(1000)
+    //@SingleClick(1000)
     public void testClick(View view) {
         showLog();
     }
@@ -44,8 +44,13 @@ public class MainActivity extends AppCompatActivity {
         Log.e("======", "showLog: " + System.currentTimeMillis());
     }
 
-    @SingleClick(value = 1000, except = {R.id.tv1, R.id.button})
-    @OnClick({R.id.tv1, R.id.button, R.id.button2})
+    @Override
+    public void onClick(View v) {
+        showLog();
+    }
+
+    //@SingleClick(value = 1000, except = {R.id.tv1, R.id.button})
+    /*@OnClick({R.id.tv1, R.id.button, R.id.button2})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv1:
@@ -57,6 +62,14 @@ public class MainActivity extends AppCompatActivity {
             case R.id.button2:
                 showLog();
                 break;
+        }
+    }*/
+
+    private static class MyClickListener implements View.OnClickListener {
+        @SingleClick(2000)
+        @Override
+        public void onClick(View v) {
+            Log.e("2222222", "onClick: ");
         }
     }
 }

@@ -1,5 +1,6 @@
 package cn.leo.click;
 
+import android.util.Log;
 import android.view.View;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -44,7 +45,7 @@ public class SingleClickAspect {
     public void aroundJoinPoint(final ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        boolean hasAnnotation = method.isAnnotationPresent(SingleClick.class);
+        boolean hasAnnotation = method != null && method.isAnnotationPresent(SingleClick.class);
         //点击的不同对象不计算点击间隔
         Object[] args = joinPoint.getArgs();
         if (args.length >= 1 && args[0] instanceof View) {
