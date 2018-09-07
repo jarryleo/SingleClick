@@ -1,6 +1,5 @@
 package cn.leo.click;
 
-import android.util.Log;
 import android.view.View;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -79,7 +78,7 @@ public class SingleClickAspect {
         if (canClick(interval)) joinPoint.proceed();
     }
 
-    private boolean canClick(int interval) {
+    public boolean canClick(int interval) {
         long l = System.currentTimeMillis() - mLastClickTime;
         if (l > interval) {
             mLastClickTime = System.currentTimeMillis();
