@@ -6,6 +6,10 @@
 对 butterKnife 自动生成的点击事件同样有效
 
 默认防重复点击间隔 500ms
+修改全局默认间隔:
+```
+SingleClickManager.setClickInterval(1500);
+```
 
 如果想自定义点击事件间隔，加上注解（参数单位ms）：
 ```
@@ -25,8 +29,9 @@ public void onClick(View v) {
        ...
     }
 ```
-
 ps：直接在布局里指定的点击事件无法做到自动防重，请打上注解
+
+> 1.5版本更新检测线程忙碌功能,之前版本能在快速点击2个不同按钮的情况下同时打开2个页面,本次更新修复这个问题,并对老旧卡顿的机器友好
 
 ### 依赖方法:
 #### To get a Git project into your build:
@@ -61,7 +66,7 @@ apply plugin: 'android-aspectjx'  //kotlin 用这个，编译速度会慢点
 ...
 dependencies {
 	...
-	implementation 'com.github.jarryleo:SingleClick:v1.3'
+	implementation 'com.github.jarryleo:SingleClick:v1.5'
 }
 ```
 **以上java和kotlin插件二选一,如果AS版本低于3.0请使用kotlin的插件**
