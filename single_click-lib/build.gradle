@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'cn.leo.plugin.magic'
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
 }
 

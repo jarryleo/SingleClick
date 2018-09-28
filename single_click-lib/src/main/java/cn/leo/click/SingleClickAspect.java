@@ -1,5 +1,7 @@
 package cn.leo.click;
 
+import android.os.Looper;
+import android.os.MessageQueue;
 import android.view.View;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -17,6 +19,7 @@ import java.lang.reflect.Method;
 public class SingleClickAspect {
     private static long mLastClickTime;
     private static int mLastClickId;
+    private boolean mThreadIdle = true;
 
     private static final String POINTCUT_METHOD =
             "execution(* onClick(..))";
@@ -51,12 +54,17 @@ public class SingleClickAspect {
             Object arg = args[0];
             int id = ((View) arg).getId();
             if (mLastClickId != id) {
+                //如果线程忙碌则不点击,防止不同按钮打开不同的页面
+                if (!mThreadIdle) {
+                    return;
+                }
+                checkThreadIdle();
                 joinPoint.proceed();
                 mLastClickId = id;
                 mLastClickTime = System.currentTimeMillis();
                 return;
             }
-            //注解排除某个控件不防止点击
+            //注解排除某个控件不防止双击
             if (hasAnnotation) {
                 SingleClick annotation = method.getAnnotation(SingleClick.class);
 
@@ -70,12 +78,15 @@ public class SingleClickAspect {
             }
         }
         //计算点击间隔，没有注解默认500，有注解按注解参数来，注解参数为空默认500；
-        int interval = 500;
+        int interval = SingleClickManager.clickInterval;
         if (hasAnnotation) {
             SingleClick annotation = method.getAnnotation(SingleClick.class);
             interval = annotation.value();
         }
-        if (canClick(interval)) joinPoint.proceed();
+        if (canClick(interval)) {
+            checkThreadIdle();
+            joinPoint.proceed();
+        }
     }
 
     public boolean canClick(int interval) {
@@ -85,5 +96,16 @@ public class SingleClickAspect {
             return true;
         }
         return false;
+    }
+
+    public void checkThreadIdle() {
+        mThreadIdle = false;
+        Looper.myQueue().addIdleHandler(new MessageQueue.IdleHandler() {
+            @Override
+            public boolean queueIdle() {
+                mThreadIdle = true;
+                return false;
+            }
+        });
     }
 }
