@@ -99,13 +99,17 @@ public class SingleClickAspect {
     }
 
     public void checkThreadIdle() {
-        mThreadIdle = false;
-        Looper.myQueue().addIdleHandler(new MessageQueue.IdleHandler() {
-            @Override
-            public boolean queueIdle() {
-                mThreadIdle = true;
-                return false;
-            }
-        });
+        if (SingleClickManager.isCheckThreadIdle) {
+            mThreadIdle = false;
+            Looper.myQueue().addIdleHandler(new MessageQueue.IdleHandler() {
+                @Override
+                public boolean queueIdle() {
+                    mThreadIdle = true;
+                    return false;
+                }
+            });
+        } else {
+            mThreadIdle = true;
+        }
     }
 }

@@ -6,6 +6,7 @@ package cn.leo.click;
  */
 public class SingleClickManager {
     static int clickInterval = 500;
+    static boolean isCheckThreadIdle = true;
 
     private SingleClickManager() {
     }
@@ -15,7 +16,16 @@ public class SingleClickManager {
      *
      * @param clickIntervalMillis 间隔毫秒值
      */
-    public static void init(int clickIntervalMillis) {
+    public static void setClickInterval(int clickIntervalMillis) {
         clickInterval = clickIntervalMillis;
+    }
+
+    /**
+     * 设置线程忙碌检测,线程忙碌时其它按钮防止点击
+     *
+     * @param checkThreadIdle 是否检测线程空闲
+     */
+    public static void setCheckThreadIdle(boolean checkThreadIdle) {
+        isCheckThreadIdle = checkThreadIdle;
     }
 }

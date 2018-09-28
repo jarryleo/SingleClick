@@ -1,7 +1,6 @@
 package cn.leo.singleclick;
 
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        SingleClickManager.init(1500);
+        SingleClickManager.setClickInterval(1500);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
