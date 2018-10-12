@@ -70,7 +70,6 @@ public class SingleClickAspect {
                 SingleClick annotation = method.getAnnotation(SingleClick.class);
                 //按id排除点击
                 int[] except = annotation.except();
-                String[] idName = annotation.exceptIdName();
                 for (int i : except) {
                     if (i == id) {
                         joinPoint.proceed();
@@ -78,6 +77,7 @@ public class SingleClickAspect {
                     }
                 }
                 //按id名排除点击
+                String[] idName = annotation.exceptIdName();
                 Resources resources = view.getResources();
                 for (String name : idName) {
                     int resId = resources.getIdentifier(name, "id", view.getContext().getPackageName());
