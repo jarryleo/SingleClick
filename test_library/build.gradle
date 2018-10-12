@@ -1,4 +1,5 @@
 //apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
 apply plugin: 'cn.leo.plugin.magic'
 apply plugin: 'com.jakewharton.butterknife'
 
