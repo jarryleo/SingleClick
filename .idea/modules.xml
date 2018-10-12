@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/SingleClick.iml" filepath="$PROJECT_DIR$/SingleClick.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/single_click-lib/single_click-lib.iml" filepath="$PROJECT_DIR$/single_click-lib/single_click-lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test_library/test_library.iml" filepath="$PROJECT_DIR$/test_library/test_library.iml" />
     </modules>
   </component>
 </project>

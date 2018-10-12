@@ -14,5 +14,7 @@ import java.lang.annotation.Target;
 public @interface SingleClick {
     int value() default 500;
 
-    int[] except() default {-1};
+    int[] except() default {};
+
+    String[] exceptIdName() default {};
 }

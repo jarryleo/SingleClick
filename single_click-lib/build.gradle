@@ -3,4 +3,6 @@ apply plugin: 'cn.leo.plugin.magic'
 android {
     compileSdkVersion 27
 }
-
+dependencies {
+    compileOnly 'com.android.support:appcompat-v7:27.1.1'
+}

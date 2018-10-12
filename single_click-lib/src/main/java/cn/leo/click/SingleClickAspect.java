@@ -1,5 +1,6 @@
 package cn.leo.click;
 
+import android.content.res.Resources;
 import android.os.Looper;
 import android.os.MessageQueue;
 import android.view.View;
@@ -51,8 +52,8 @@ public class SingleClickAspect {
         //点击的不同对象不计算点击间隔
         Object[] args = joinPoint.getArgs();
         if (args.length >= 1 && args[0] instanceof View) {
-            Object arg = args[0];
-            int id = ((View) arg).getId();
+            View view = (View) args[0];
+            int id = view.getId();
             if (mLastClickId != id) {
                 //如果线程忙碌则不点击,防止不同按钮打开不同的页面
                 if (!mThreadIdle) {
@@ -67,10 +68,20 @@ public class SingleClickAspect {
             //注解排除某个控件不防止双击
             if (hasAnnotation) {
                 SingleClick annotation = method.getAnnotation(SingleClick.class);
-
+                //按id排除点击
                 int[] except = annotation.except();
+                String[] idName = annotation.exceptIdName();
                 for (int i : except) {
                     if (i == id) {
+                        joinPoint.proceed();
+                        return;
+                    }
+                }
+                //按id名排除点击
+                Resources resources = view.getResources();
+                for (String name : idName) {
+                    int resId = resources.getIdentifier(name, "id", view.getContext().getPackageName());
+                    if (resId == id) {
                         joinPoint.proceed();
                         return;
                     }

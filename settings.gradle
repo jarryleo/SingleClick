@@ -1,1 +1,1 @@
-include ':app', ':single_click-lib'
+include ':app', ':single_click-lib', ':test_library'

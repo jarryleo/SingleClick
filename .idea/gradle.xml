@@ -10,6 +10,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/single_click-lib" />
+            <option value="$PROJECT_DIR$/test_library" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
