@@ -23,11 +23,19 @@ public void onClick(View v) {
 
 若在一个点击事件方法有多个view的情况，想排除其中某些view不防双击使用以下方式:
 ```
+    //app 模块内如下
     @SingleClick(value = 1000, except = {R.id.tv1, R.id.button})
     @OnClick({R.id.tv1, R.id.button, R.id.button2})
     public void onViewClicked(View view) {
        ...
     }
+    //其它业务模块如下(模块的R文件值不是final,而注解参数只能是final)
+     @SingleClick(value = 1500, exceptIdName = {"testBtn2"})
+     @OnClick({R2.id.testBtn1, R2.id.testBtn2})
+     public void onViewClicked(View view) {
+       ...
+     }
+    
 ```
 ps：直接在布局里指定的点击事件无法做到自动防重，请打上注解
 
@@ -58,7 +66,7 @@ allprojects {
 google()和jcenter()这两个仓库一般是默认的，如果没有请加上
 
 #### Step 2. Add the dependency
-2.在app的build里面添加插件和依赖
+2.在app的build里面添加插件和依赖 (如果是多个业务模块,每个业务模块都要添加下面的插件和依赖)
 ```
 ...
 apply plugin: 'cn.leo.plugin.magic' //java 用这个
