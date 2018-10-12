@@ -23,7 +23,7 @@ public class SingleClickAspect {
     private boolean mThreadIdle = true;
 
     private static final String POINTCUT_METHOD =
-            "execution(* onClick(..))";
+            "execution(* on*Click(..))";
     private static final String POINTCUT_ANNOTATION =
             "execution(@cn.leo.click.SingleClick * *(..))";
     private static final String POINTCUT_BUTTER_KNIFE =
@@ -48,19 +48,22 @@ public class SingleClickAspect {
     public void aroundJoinPoint(final ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
+        //检查方法是否有注解
         boolean hasAnnotation = method != null && method.isAnnotationPresent(SingleClick.class);
         //点击的不同对象不计算点击间隔
         Object[] args = joinPoint.getArgs();
-        if (args.length >= 1 && args[0] instanceof View) {
-            View view = (View) args[0];
+        View view = findViewInMethodArgs(args);
+        if (args.length >= 1 && view != null) {
             int id = view.getId();
+            //本次点击控件与上次不同情况
             if (mLastClickId != id) {
-                //如果线程忙碌则不点击,防止不同按钮打开不同的页面
+                //如果线程忙碌则拦截点击,防止不同按钮打开不同的页面
                 if (!mThreadIdle) {
                     return;
                 }
-                checkThreadIdle();
+                //线程不忙碌则执行点击,同时记录点击的控件id和点击时间
                 joinPoint.proceed();
+                checkThreadIdle();
                 mLastClickId = id;
                 mLastClickTime = System.currentTimeMillis();
                 return;
@@ -94,10 +97,23 @@ public class SingleClickAspect {
             SingleClick annotation = method.getAnnotation(SingleClick.class);
             interval = annotation.value();
         }
-        if (canClick(interval)) {
-            checkThreadIdle();
+        //检测间隔时间是否达到预设时间并且线程空闲
+        if (canClick(interval) && mThreadIdle) {
             joinPoint.proceed();
+            checkThreadIdle();
         }
+    }
+
+    public View findViewInMethodArgs(Object[] args) {
+        for (int i = 0; i < args.length; i++) {
+            if (args[i] instanceof View) {
+                View view = (View) args[i];
+                if (view.getId() != View.NO_ID) {
+                    return view;
+                }
+            }
+        }
+        return null;
     }
 
     public boolean canClick(int interval) {

@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.leo.click.SingleClick;
 import cn.leo.click.SingleClickManager;
 import cn.leo.test_library.TestActivity;
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button mButton;
     @BindView(R.id.button2)
     Button mButton2;
+    @BindView(R.id.listView)
+    ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,30 +37,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showLog();
+                showLog("button");
             }
         });
         mTv1.setOnClickListener(new MyClickListener());
+        initListView();
+    }
+
+    private void initListView() {
+        String[] strings = {"测试1", "测试2", "测试3", "测试4", "测试5",};
+        mListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, strings));
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showLog("onItemClick");
+            }
+        });
     }
 
     @SingleClick(1000)
     public void testClick(View view) {
-
-        Log.e("startTestActivity======", "showLog: " + System.currentTimeMillis());
+        startActivity(new Intent(this, TestActivity.class));
+        showLog("startActivity");
     }
 
-    private void showLog() {
-        Log.e("MainActivity======", "showLog: " + System.currentTimeMillis());
-        startActivity(new Intent(this, TestActivity.class));
+    private void showLog(String msg) {
+        Log.e("MainActivity[" + System.currentTimeMillis() + "]", "showLog: " + msg);
+
     }
 
     @Override
     public void onClick(View v) {
-        showLog();
+        showLog("tv");
     }
 
 
-    @SingleClick(value = 1000, except = {R.id.tv1, R.id.button})
+   /* @SingleClick(value = 1000, except = {R.id.tv1, R.id.button})
     @OnClick({R.id.tv1, R.id.button, R.id.button2})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -72,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
-    }
+    }*/
 
     private static class MyClickListener implements View.OnClickListener {
         @SingleClick(2000)
