@@ -44,11 +44,9 @@ ps：直接在布局里指定的点击事件无法做到自动防重，请打上
 > 1.5版本更新检测线程忙碌功能,之前版本能在快速点击2个不同按钮的情况下同时打开2个页面,本次更新修复这个问题,并对老旧卡顿的机器友好
 
 ### 依赖方法:
-#### To get a Git project into your build:
-#### Step 1. Add the JitPack repository to your build file
-1.在全局build里面添加下面github仓库地址
 
-Add it in your root build.gradle at the end of repositories:
+#### 1.在全局build里面添加下面github仓库地址
+
 ```
 buildscript {
     ...
@@ -67,8 +65,9 @@ allprojects {
 ```
 google()和jcenter()这两个仓库一般是默认的，如果没有请加上
 
-#### Step 2. Add the dependency
-2.在app的build里面添加插件和依赖 (如果是多个业务模块,每个业务模块都要添加下面的插件和依赖)
+
+#### 2.在app的build里面添加插件和依赖    
+### (如果是多个业务模块,每个业务模块都要添加下面的插件和依赖)
 ```
 ...
 apply plugin: 'cn.leo.plugin.magic' //java 用这个
