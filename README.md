@@ -75,7 +75,7 @@ apply plugin: 'android-aspectjx'  //kotlin 用这个，编译速度会慢点
 ...
 dependencies {
 	...
-	implementation 'com.github.jarryleo:SingleClick:v1.8'
+	implementation 'com.github.jarryleo:SingleClick:v1.8.3'
 }
 ```
 **以上java和kotlin插件二选一,如果AS版本低于3.0请使用kotlin的插件**
