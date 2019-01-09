@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.leo.click.SingleClick;
 import cn.leo.click.SingleClickManager;
 import cn.leo.test_library.TestActivity;
@@ -34,13 +35,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         SingleClickManager.setClickInterval(1500);
-        mButton.setOnClickListener(new View.OnClickListener() {
+        /*mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showLog("button");
             }
+        });*/
+        /*mButton.setOnClickListener(v -> {
+            showLog("button");
         });
-        mTv1.setOnClickListener(new MyClickListener());
+        mTv1.setOnClickListener(this);*/
         initListView();
     }
 
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    @SingleClick(1000)
+    @SingleClick(1500)
     public void testClick(View view) {
         startActivity(new Intent(this, TestActivity.class));
         showLog("startActivity");
@@ -72,26 +76,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-   /* @SingleClick(value = 1000, except = {R.id.tv1, R.id.button})
+    @SingleClick(1500)
     @OnClick({R.id.tv1, R.id.button, R.id.button2})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv1:
-                showLog();
+                showLog("tv1");
                 break;
             case R.id.button:
-                showLog();
+                showLog("button");
                 break;
             case R.id.button2:
-                showLog();
+                showLog("button2");
                 break;
             default:
                 break;
         }
-    }*/
+    }
 
     private static class MyClickListener implements View.OnClickListener {
-        @SingleClick(2000)
         @Override
         public void onClick(View v) {
             Log.e("2222222", "onClick: ");
