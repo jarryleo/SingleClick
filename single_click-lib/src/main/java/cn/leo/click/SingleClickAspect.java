@@ -17,10 +17,9 @@ import java.lang.reflect.Method;
 @Aspect
 public class SingleClickAspect {
     private static long mLastClickTime;
-    private static int mLastClickId;
 
     private static final String POINTCUT_METHOD =
-            "execution(* on*Click(..))";
+            "execution(* onClick(..))";
     private static final String POINTCUT_ANNOTATION =
             "execution(@cn.leo.click.SingleClick * *(..))";
     private static final String POINTCUT_BUTTER_KNIFE =
@@ -66,7 +65,6 @@ public class SingleClickAspect {
                     int[] except = annotation.except();
                     for (int i : except) {
                         if (i == id) {
-                            mLastClickId = id;
                             mLastClickTime = System.currentTimeMillis();
                             joinPoint.proceed();
                             return;
@@ -78,7 +76,6 @@ public class SingleClickAspect {
                     for (String name : idName) {
                         int resId = resources.getIdentifier(name, "id", view.getContext().getPackageName());
                         if (resId == id) {
-                            mLastClickId = id;
                             mLastClickTime = System.currentTimeMillis();
                             joinPoint.proceed();
                             return;
@@ -86,7 +83,6 @@ public class SingleClickAspect {
                     }
                 }
                 if (canClick(interval)) {
-                    mLastClickId = id;
                     mLastClickTime = System.currentTimeMillis();
                     joinPoint.proceed();
                     return;
